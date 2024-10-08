@@ -19,9 +19,9 @@ public class AddressController {
 	@Autowired
 	private AddressService addressService;
 	
-	@PostMapping
-	public ResponseEntity<?> saveAddress(@RequestBody Address address){
-		return addressService.saveAddress(address);
+	@PostMapping("/{aid}")
+	public ResponseEntity<?> saveAddress(@PathVariable int aid,@RequestBody Address address){
+		return addressService.saveAddress(aid,address);
 	}
 	
 	@GetMapping
@@ -33,6 +33,11 @@ public class AddressController {
 	public ResponseEntity<?> findAddressById(@PathVariable long aid){
 		return addressService.findAddressById(aid);
 	}
+	@GetMapping("/employee/{eid}")
+	public ResponseEntity<?> findAddressByEmployeeId(@PathVariable long eid){
+		return addressService.findAddressByEmployeeId(eid);
+	}
+	
 	
 	@DeleteMapping("/{aid}")
 	public ResponseEntity<?> deleteAddressById(@PathVariable long aid){

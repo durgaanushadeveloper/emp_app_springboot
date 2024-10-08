@@ -9,6 +9,7 @@ import org.jsp.emp.entity.Address;
 import org.jsp.emp.entity.Education;
 import org.jsp.emp.entity.Employee;
 import org.jsp.emp.exceptionclasses.InvalidEmployeeIdException;
+import org.jsp.emp.exceptionclasses.NoAddressesFoundException;
 import org.jsp.emp.exceptionclasses.NoEducationFoundException;
 import org.jsp.emp.responsestructure.ResponseStructure;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,13 @@ public class AddressService {
 	private EmployeeDao employeeDao;
 	
 	// add address
-	public ResponseEntity<?> saveAddress(Address address){
-		
-		// Fetch the full Employee object from the database using the ID
-	    Employee employee = employeeDao.findEmpById(address.getEmployee().getId()).orElse(null);
-	    
-	    // Set the fetched employee in the education entity
-	    address.setEmployee(employee);
+	public ResponseEntity<?> saveAddress(int aid, Address address){
+	
+	    Optional<Employee> optional = employeeDao.findEmpById(aid);
+	    if(optional.isEmpty())
+	    	throw InvalidEmployeeIdException.builder().message("invalid id ").build();
+	     Employee employee=optional.get();
+	     address.setEmployee(employee);
 	    
 		Address saveaddress= addressDao.saveAddress(address);
 		
@@ -94,6 +95,13 @@ public class AddressService {
 				.build();
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+
+	public ResponseEntity<?> findAddressByEmployeeId(long eid) {
+		List<Address> address=addressDao.findAddressByEmployeeId(eid);
+		if(address.isEmpty())
+			throw NoAddressesFoundException.builder().message("no addresses found").build();
+		return ResponseEntity.status(HttpStatus.OK).body(ResponseStructure.builder().status(HttpStatus.OK.value()).message("address fetched successfully").body(address).build());
 	}
 
 }

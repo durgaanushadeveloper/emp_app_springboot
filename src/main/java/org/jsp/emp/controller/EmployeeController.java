@@ -1,9 +1,6 @@
 package org.jsp.emp.controller;
 
-import java.util.List;
-
 import org.jsp.emp.entity.Employee;
-import org.jsp.emp.responsestructure.ResponseStructure;
 import org.jsp.emp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

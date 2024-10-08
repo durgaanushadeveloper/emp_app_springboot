@@ -39,4 +39,8 @@ public class AddressDao {
 		 addressRepo.deleteById(id);
 	}
 
+	public List<Address> findAddressByEmployeeId(long eid) {
+		return addressRepo.findAddressByEmployeeId(eid);
+	}
+
 }
